@@ -18,12 +18,11 @@ const start = function(word){
     console.log(wordInArray.join(""));
     guessedWord.innerText = wordInArray.join("");
 };
-
 start(word);
 
 guessButton.addEventListener("click",function(e){
     e.preventDefault();
-    const letter = letterInput.value;
-    console.log(letter);
+    const letter = letterInput.ariaValueMax;
+    console.log(`${letter}`);
     letterInput.value="";
 });
