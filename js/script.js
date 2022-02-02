@@ -10,6 +10,7 @@ const resetButton = document.querySelector(".play-again hide");
 const word = "mangolia";
 const guessedLetters = [];
 
+
 const start = function(word){
     const wordInArray = [];
     for (let i=0 ; i<word.length; i++)
@@ -29,6 +30,7 @@ guessButton.addEventListener("click",function(e){
     const validatedLetter = inputValidation(letter);
     if(validatedLetter){makeGuess(validatedLetter);console.log(validatedLetter);}
     letterInput.value="";
+    
 });
 
 const inputValidation = function (input){
@@ -37,10 +39,39 @@ const inputValidation = function (input){
     else if (input.length>1){message.innerText="Please enter a single letter";}
     else if (!input.match(acceptedInput)){message.innerText="Please a valid letter from A to Z";}
     else{return input;}
+    
 };
 
 const makeGuess = function (letter){
     letter = letter.toUpperCase();
     if (guessedLetters.includes(letter)){message.innerText="You already guessed that letter. Try again.";}
-    else {guessedLetters.push(letter);console.log(guessedLetters.join(","))}
+    else {guessedLetters.push(letter);console.log(guessedLetters.join(","));updateGuessedLettersList(guessedLetters);updateGuessedWord(guessedLetters);}
+};
+
+const updateGuessedLettersList = function (guessedLetters){
+    guessList.innerHTML ="";
+    for (let letter of guessedLetters){
+        const li = document.createElement("li");
+        li.innerText = letter;
+        guessList.append(li);
+    }
+};
+
+const updateGuessedWord = function (guessedLetters){
+    wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    const revealed = [];
+    for (let letter of wordArray){
+        if (guessedLetters.includes(letter)){revealed.push(letter);}
+        else {revealed.push("●");}
+    }
+    guessedWord.innerText = revealed.join("");
+    checkWin(revealed.join(""));
+}
+
+const checkWin = function(wordInProgress){
+    if (!wordInProgress.includes("●")){
+        message.classList.add("win");
+        message.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`;
+    }
 };
